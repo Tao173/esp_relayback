@@ -30,7 +30,8 @@ message RelayConfigMessage {
     uint32 module_type = 20 [(nanopb).int_size = IS_8];
     uint32 report_interval = 21 [(nanopb).int_size = IS_16];
     uint32 led = 22 [(nanopb).int_size = IS_8];
-    
+
     uint32 max_pwm = 23 [(nanopb).int_size = IS_8];
+    uint32 yeelight_interval = 24 [(nanopb).int_size = IS_16];
 
 }

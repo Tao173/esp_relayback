@@ -489,8 +489,14 @@ void Relay::httpHtml(WebServer *server)
                  "<label class='bui-radios-label'><input type='radio' name='power_mode' value='0'/><i class='bui-radios'></i> 自锁</label>&nbsp;&nbsp;&nbsp;&nbsp;"
                  "<label class='bui-radios-label'><input type='radio' name='power_mode' value='1'/><i class='bui-radios'></i> 互锁</label>&nbsp;&nbsp;&nbsp;&nbsp;"
                  "<label class='bui-radios-label'><input type='radio' name='power_mode' value='2'/><i class='bui-radios'></i> 点动</label>&nbsp;&nbsp;&nbsp;&nbsp;"
+                 "<label class='bui-radios-label'><input type='radio' name='power_mode' value='3'/><i class='bui-radios'></i> 点动（Yeelight）</label>&nbsp;&nbsp;&nbsp;&nbsp;"
                  "</td></tr>"));
     }
+
+    snprintf_P(html, sizeof(html),
+                PSTR("<tr><td>点动（Yeelight）间隔时间</td><td><input type='number' name='yeelight_interval' value='%d'>毫秒</td></tr>"),
+                config.yeelight_interval);
+    server->sendContent_P(html);
 
     server->sendContent_P(
         PSTR("<tr><td>开关类型</td><td>"
@@ -719,6 +725,10 @@ void Relay::httpSetting(WebServer *server)
     if (server->hasArg(F("power_mode")))
     {
         config.power_mode = server->arg(F("power_mode")).toInt();
+    }
+    if (server->hasArg(F("yeelight_interval")))
+    {
+        config.yeelight_interval = server->arg(F("yeelight_interval")).toInt();
     }
     if (server->hasArg(F("led_type")))
     {
@@ -1022,6 +1032,11 @@ void Relay::switchRelay(uint8_t ch, bool isOn, bool isSave)
     if (isOn && config.power_mode == 2)
     {
         delay(100);
+        switchRelay(ch, !isOn, isSave);
+    }
+    if (!isOn && config.power_mode == 3)  //Yeelight点动模式
+    {
+        delay(config.yeelight_interval);
         switchRelay(ch, !isOn, isSave);
     }
 }
