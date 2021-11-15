@@ -18,7 +18,15 @@ static DRAM_ATTR ROTARY Rotary;
 void Dimming::init(Relay *_relay)
 {
     relay = _relay;
-    pwmstartch = relay->channels;
+    //自定义，如果是3路调光模式，pwm开关的开始序数从0开始，否则从继电器开关数量计起。
+    if(relay->config.module_type == CH3_dimming)
+    {
+        pwmstartch = 0;
+    }
+    else
+    {
+       pwmstartch = relay->channels;
+    }
 
     uint8_t pin = 0;
     bool pwm_invert = false;

@@ -489,12 +489,12 @@ void Relay::httpHtml(WebServer *server)
                  "<label class='bui-radios-label'><input type='radio' name='power_mode' value='0'/><i class='bui-radios'></i> 自锁</label>&nbsp;&nbsp;&nbsp;&nbsp;"
                  "<label class='bui-radios-label'><input type='radio' name='power_mode' value='1'/><i class='bui-radios'></i> 互锁</label>&nbsp;&nbsp;&nbsp;&nbsp;"
                  "<label class='bui-radios-label'><input type='radio' name='power_mode' value='2'/><i class='bui-radios'></i> 点动</label>&nbsp;&nbsp;&nbsp;&nbsp;"
-                 "<label class='bui-radios-label'><input type='radio' name='power_mode' value='3'/><i class='bui-radios'></i> 点动（Yeelight）</label>&nbsp;&nbsp;&nbsp;&nbsp;"
+                 "<label class='bui-radios-label'><input type='radio' name='power_mode' value='3'/><i class='bui-radios'></i> Yeelight凌动</label>&nbsp;&nbsp;&nbsp;&nbsp;"
                  "</td></tr>"));
     }
 
     snprintf_P(html, sizeof(html),
-                PSTR("<tr><td>点动（Yeelight）间隔时间</td><td><input type='number' name='yeelight_interval' value='%d'>毫秒</td></tr>"),
+                PSTR("<tr><td>Yeelight凌动间隔时间</td><td><input type='number' name='yeelight_interval' value='%d'>毫秒</td></tr>"),
                 config.yeelight_interval);
     server->sendContent_P(html);
 
@@ -1008,6 +1008,8 @@ void Relay::switchRelay(uint8_t ch, bool isOn, bool isSave)
     if (dimming && ch >= dimming->pwmstartch)
     {
         dimming->switchRelayPWM(ch, isOn, isSave);
+        //自定义，兼容3路开关调光模式，控制继电器开关
+        digitalWrite(RELAY_PIN[ch], isOn ? HIGH : LOW);
     }
     else
     {
@@ -1034,7 +1036,7 @@ void Relay::switchRelay(uint8_t ch, bool isOn, bool isSave)
         delay(100);
         switchRelay(ch, !isOn, isSave);
     }
-    if (!isOn && config.power_mode == 3)  //Yeelight点动模式
+    if (!isOn && config.power_mode == 3)  //Yeelight凌动模式
     {
         delay(config.yeelight_interval);
         switchRelay(ch, !isOn, isSave);

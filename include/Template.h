@@ -45,14 +45,15 @@ enum SupportedModules
     CH1,
     CH2,
     CH3,
-    iciness_CH3,
+    // iciness_CH3,
+    CH3_dimming,  //自定义
     Yeelight,
-    WEILE,
+    // WEILE,
 #ifdef USE_CAIJI
     ji_CH4,
     ji_CH8,
 #endif
-    Kong,
+    // Kong,
 #else
     PMW4,
     CH2_PWM,
@@ -111,11 +112,24 @@ const mytmplt Modules[MAXMODULE] PROGMEM = {
 
         99 // END
     },
+    // {
+    //     "iciness CH3",    // 3 Channel (ESP8285)
+    //     2, 3, 14, 15, 12, // RELAY IO
+    //     3, 3, 9, 10, 2,   // BUTTON IO
+    //     4, 3, 4, 5, 16,   // RELAY LED IO
+
+    //     99 // END
+    // },
     {
-        "iciness CH3",    // 3 Channel (ESP8285)
-        2, 3, 14, 15, 12, // RELAY IO
-        3, 3, 9, 10, 2,   // BUTTON IO
-        4, 3, 4, 5, 16,   // RELAY LED IO
+        "3路开关（调光）",    // 3 Channel with dimming (ESP8285) //自定义
+        1, 1, 16 + 50,   // LED IO
+        2, 3, 14, 12, 5, // RELAY IO
+        3, 3, 4, 9, 10,  // BUTTON IO
+        4, 3, 0, 2, 15,  // RELAY LED IO
+        5, 1, 13,        // 433 IO
+
+        6, 1, 80,  // PWM1 IO  为了兼容原PWM代码设置的虚拟端口,Relay4即为虚拟开关，无需理会
+        7, 1, 80, // PWM2 IO   为了兼容原PWM代码设置的虚拟端口,Relay4即为虚拟开关，无需理会
 
         99 // END
     },
@@ -130,14 +144,14 @@ const mytmplt Modules[MAXMODULE] PROGMEM = {
 
         99 // END
     },
-    {
-        "威乐回水器",  // 2 Channel (ESP8285)
-        1, 1, 16 + 50, // LED IO
-        2, 2, 14, 12,  // RELAY IO
-        5, 1, 13,      // 433 IO
+    // {
+    //     "威乐回水器",  // 2 Channel (ESP8285)
+    //     1, 1, 16 + 50, // LED IO
+    //     2, 2, 14, 12,  // RELAY IO
+    //     5, 1, 13,      // 433 IO
 
-        99 // END
-    },
+    //     99 // END
+    // },
 #ifdef USE_CAIJI
     {
         "菜鸡 CH4",  // 4 Channel (ESP8285)
@@ -155,14 +169,14 @@ const mytmplt Modules[MAXMODULE] PROGMEM = {
         99 // END
     },
 #endif
-    {
-        "孔总",  // 3 Channel (ESP8285)
-        1, 1, 13 + 50,   // LED IO
-        2, 3, 12, 5, 4, // RELAY IO
-        3, 3, 0, 9, 10,  // BUTTON IO
+    // {
+    //     "孔总",  // 3 Channel (ESP8285)
+    //     1, 1, 13 + 50,   // LED IO
+    //     2, 3, 12, 5, 4, // RELAY IO
+    //     3, 3, 0, 9, 10,  // BUTTON IO
 
-        99 // END
-    },
+    //     99 // END
+    // },
 #else
     {
         "4路调光",            // 4 PWM
