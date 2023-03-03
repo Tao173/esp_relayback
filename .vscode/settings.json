@@ -5,5 +5,6 @@
         "string": "cpp",
         "*.tcc": "cpp",
         "sstream": "cpp"
-    }
+    },
+    "DockerRun.DisableAutoGenerateConfig": true
 }
