@@ -1,8 +1,13 @@
 # ESP RELAY
+
 **配置说明.**
+
 如需设置如WIFI、MQTT相关功能的默认值，请在esp_framework库-include文件夹-Config.h文件中修改。
+
 **批量OTA功能（慎用）**
+
 ESP8266: relay/esp8266/ota
+
 ESP32:   relay/esp32/ota
 
 # ESP RELAY
